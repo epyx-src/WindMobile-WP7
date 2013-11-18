@@ -90,12 +90,13 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel.Runtime
         private async Task refreshCloseStations()
         {
             CloseStations.Clear();
+            CurrentStation = null;
             foreach (var station in await ServiceLocator.Current.GetInstance<Service.INetworkService>().GeoSearchStations(currentLocation, distanceInMetersForGetSearch))
             {
                 CloseStations.Add(station);
-                if (CloseStations.Count == 1)
+                if (CurrentStation == null && !string.IsNullOrWhiteSpace(station.DisplayName) && station.StatusString != "hidden")
                 {
-                    CurrentStation = CloseStations.First();
+                    CurrentStation = station;
                 }
             }
         }

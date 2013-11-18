@@ -28,7 +28,9 @@
             </phone:Pivot.HeaderTemplate>
             <!--Pivot item one-->
             <phone:PivotItem Header="{Binding Path=PivotHeaderNow, Source={StaticResource LocalizedStrings}}">
-                <Grid/>
+                <StackPanel>
+                    <TextBlock Text="{Binding CurrentStation.DisplayName}" Foreground="Green" />
+                </StackPanel>
             </phone:PivotItem>
 
             <!--Pivot item two-->
