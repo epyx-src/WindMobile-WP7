@@ -13,7 +13,7 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel
 
         List<Model.StationData> CurrentStationData { get; }
 
-        void SetLocation(Model.Location CurrentLocation);
+        void Init();
 
         /// <summary>
         /// List of closest stations

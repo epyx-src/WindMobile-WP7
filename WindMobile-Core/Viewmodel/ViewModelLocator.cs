@@ -38,5 +38,11 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel
                 return ServiceLocator.Current.GetInstance<IMainViewModel>();
             }
         }
+
+        public static void RegisterLocationService<T>() where T : class, Service.ILocationService
+        {
+            SimpleIoc.Default.Register<Service.ILocationService, T>();
+        }
+
     }
 }

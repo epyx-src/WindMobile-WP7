@@ -7,35 +7,77 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using WindMobile_WP8.Resources;
+using Ch.Epyx.WindMobile.WP8.Resources;
+using System.IO.IsolatedStorage;
 
-namespace WindMobile_WP8
+namespace Ch.Epyx.WindMobile.WP8
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // Constructor
         public MainPage()
         {
             InitializeComponent();
-
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
+            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).Text = AppResources.AppBarSearchText;
         }
 
-        // Sample code for building a localized ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-        //    ApplicationBar = new ApplicationBar();
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as Core.Viewmodel.IMainViewModel).Init();
 
-        //    // Create a new button and set the text value to the localized string from AppResources.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
+            SystemTray.ProgressIndicator = new ProgressIndicator()
+            {
+                Text = "WindMobile",
+                IsVisible = true,
+                IsIndeterminate = false,
+            };
+        }
 
-        //    // Create a new menu item with the localized string from AppResources.
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
+            {
+                // User has opted in or out of Location
+                return;
+            }
+            else
+            {
+                MessageBoxResult result =
+                    MessageBox.Show(AppResources.LocationConsentDetailText, AppResources.LocationConsentTitleText, MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
+                }
+                else
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
+                }
+
+                IsolatedStorageSettings.ApplicationSettings.Save();
+                // TODO settings to change this after
+            }
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is Pivot)
+            {
+                if ((sender as Pivot).SelectedIndex == 0)
+                {
+                    VisualStateManager.GoToState(this, "BackgroundVisible", true);
+                }
+                else
+                {
+                    VisualStateManager.GoToState(this, "BackgroundCollapsed", true);
+                }
+            }
+        }
+
+        private void searchStation_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/SearchPage.xaml", UriKind.Relative));
+        }
     }
 }

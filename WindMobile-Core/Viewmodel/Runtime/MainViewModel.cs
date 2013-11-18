@@ -20,6 +20,23 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel.Runtime
             get; private set;
         }
 
+        public async void Init()
+        {
+            var location = await ServiceLocator.Current.GetInstance<Service.ILocationService>().GetCurrentLocation();
+            if (location != null)
+            {
+                this.SetLocation(location);
+            }
+            else
+            {
+                var stations = await ServiceLocator.Current.GetInstance<Service.INetworkService>().ListStations(limit: 1);
+                if (stations.Count > 0)
+                {
+                    CurrentStation = stations.First();
+                }
+            }
+        }
+
         private bool inProgress;
         public bool InProgress
         {
@@ -54,7 +71,7 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel.Runtime
             get; private set;
         }
 
-        public async void SetLocation(Model.Location CurrentLocation)
+        private async void SetLocation(Model.Location CurrentLocation)
         {
             InProgress = true;
             currentLocation = CurrentLocation;
@@ -101,6 +118,7 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel.Runtime
         }
         
         #endregion
+
 
     }
 }

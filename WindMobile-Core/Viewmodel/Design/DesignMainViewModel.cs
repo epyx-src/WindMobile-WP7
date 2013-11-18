@@ -58,7 +58,8 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel.Design
             get; private set;
         }
 
-        public void SetLocation(Model.Location CurrentLocation)
+
+        public void Init()
         {
             throw new NotImplementedException();
         }

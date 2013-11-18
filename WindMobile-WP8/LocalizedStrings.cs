@@ -1,6 +1,6 @@
-﻿using WindMobile_WP8.Resources;
+﻿using Ch.Epyx.WindMobile.WP8.Resources;
 
-namespace WindMobile_WP8
+namespace Ch.Epyx.WindMobile.WP8
 {
     /// <summary>
     /// Provides access to string resources.
@@ -10,5 +10,7 @@ namespace WindMobile_WP8
         private static AppResources _localizedResources = new AppResources();
 
         public AppResources LocalizedResources { get { return _localizedResources; } }
+
+        public string PivotHeaderNow { get { return AppResources.PivotHeaderNow; } }
     }
 }

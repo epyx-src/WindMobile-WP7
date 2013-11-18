@@ -6,9 +6,9 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using WindMobile_WP8.Resources;
+using Ch.Epyx.WindMobile.WP8.Resources;
 
-namespace WindMobile_WP8
+namespace Ch.Epyx.WindMobile.WP8
 {
     public partial class App : Application
     {
@@ -28,6 +28,8 @@ namespace WindMobile_WP8
 
             // Standard XAML initialization
             InitializeComponent();
+
+            Core.Viewmodel.ViewModelLocator.RegisterLocationService<Service.WPLocationService>();
 
             // Phone-specific initialization
             InitializePhoneApplication();
