@@ -32,7 +32,7 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel.Runtime
                 var stations = await ServiceLocator.Current.GetInstance<Service.INetworkService>().ListStations(limit: 1);
                 if (stations.Count > 0)
                 {
-                    CurrentStation = stations.First();
+                    CurrentStation = stations.Where(s => s.IsValid).First();
                 }
             }
         }
@@ -91,10 +91,11 @@ namespace Ch.Epyx.WindMobile.Core.Viewmodel.Runtime
         {
             CloseStations.Clear();
             CurrentStation = null;
-            foreach (var station in await ServiceLocator.Current.GetInstance<Service.INetworkService>().GeoSearchStations(currentLocation, distanceInMetersForGetSearch))
+            var stations = await ServiceLocator.Current.GetInstance<Service.INetworkService>().GeoSearchStations(currentLocation, distanceInMetersForGetSearch);
+            foreach (var station in stations.Where(s => s.IsValid))
             {
                 CloseStations.Add(station);
-                if (CurrentStation == null && !string.IsNullOrWhiteSpace(station.DisplayName) && station.StatusString != "hidden")
+                if (CurrentStation == null)
                 {
                     CurrentStation = station;
                 }

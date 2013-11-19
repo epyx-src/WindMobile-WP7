@@ -51,6 +51,16 @@ namespace Ch.Epyx.WindMobile.Core.Model
 
         [DataMember(Name="desc")]
         public string Description { get; set; }
+
+        [IgnoreDataMember]
+        public bool IsValid
+        {
+            get
+            {
+                return this.StatusString.Equals("green", StringComparison.OrdinalIgnoreCase) ||
+                       this.StatusString.Equals("yellow", StringComparison.OrdinalIgnoreCase);
+            }
+        }
     }
 
     [DataContract]
